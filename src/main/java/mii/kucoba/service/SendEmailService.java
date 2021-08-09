@@ -17,6 +17,8 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
+import org.thymeleaf.context.Context;
+import org.thymeleaf.spring5.SpringTemplateEngine;
 
 /**
  *
@@ -27,15 +29,20 @@ public class SendEmailService {
 
     @Autowired
     private JavaMailSender emailSender;
+    
+    @Autowired
+    private SpringTemplateEngine springTemplateEngine;
 
-    public SendEmail sendSimpleMessage(SendEmail sendEmail) {
+    public SendEmail sendSimpleMessage(SendEmail sendEmail, Context context) {
         MimeMessage msg = emailSender.createMimeMessage();
+        
         try {
+            String emailBody = springTemplateEngine.process("email", context);
             MimeMessageHelper message = new MimeMessageHelper(msg,StandardCharsets.UTF_8.name());
             String htmlMsg = sendEmail.getText();
             message.setTo(sendEmail.getTo());
             message.setSubject(sendEmail.getSubject());
-            message.setText(htmlMsg, true);
+            message.setText(emailBody, true);
 //            msg.setContent(htmlMsg, "<h3>Hello World!</h3>");
             emailSender.send(msg);
         } catch (MessagingException e) {

@@ -31,10 +31,10 @@ public class EmailController {
     }
     
     
-    @PostMapping
-    public SendEmail SendEmail(@RequestBody SendEmail sendEmail) {
-        return sendEmailService.sendSimpleMessage(sendEmail);
-    }   
+//    @PostMapping
+//    public SendEmail SendEmail(@RequestBody SendEmail sendEmail) {
+//        return sendEmailService.sendSimpleMessage(sendEmail);
+//    }   
     
     
     
